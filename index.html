@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IronVault — DN Security Labs</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;color:#1a1a1a;background:#fff}
+a{text-decoration:none}
+
+nav{background:#0a1628;padding:14px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo-wrap{display:flex;align-items:center;gap:10px}
+.logo-box{width:36px;height:36px;background:#378ADD;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.logo-box svg{width:20px;height:20px}
+.logo-text{font-size:15px;font-weight:700;color:#fff}
+nav a{font-size:13px;color:#7a9ab5;margin-left:24px}
+nav a:hover{color:#fff}
+
+.hero{background:#0a1628;padding:80px 40px 72px;text-align:center}
+.hero-inner{max-width:740px;margin:0 auto}
+.pill{display:inline-flex;align-items:center;gap:6px;background:rgba(55,138,221,0.15);color:#7ec8f4;font-size:11px;font-weight:700;padding:5px 16px;border-radius:20px;margin-bottom:22px;letter-spacing:.6px;border:1px solid rgba(55,138,221,0.25)}
+.pill-dot{width:6px;height:6px;background:#378ADD;border-radius:50%;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-size:64px;font-weight:900;color:#fff;line-height:1.0;letter-spacing:-3px;margin-bottom:10px}
+.hero h1 em{color:#E24B4A;font-style:normal}
+.hero-sub{font-size:18px;font-weight:600;color:#378ADD;margin-bottom:16px;letter-spacing:.2px}
+.hero-p{font-size:15px;color:#7a9ab5;line-height:1.75;margin-bottom:32px;max-width:620px;margin-left:auto;margin-right:auto}
+.badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.b{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.2px}
+.b-blue{background:rgba(55,138,221,0.15);color:#7ec8f4;border:1px solid rgba(55,138,221,0.3)}
+.b-green{background:rgba(29,158,117,0.15);color:#5dcaa5;border:1px solid rgba(29,158,117,0.3)}
+.b-gray{background:rgba(255,255,255,0.07);color:#aaa;border:1px solid rgba(255,255,255,0.15)}
+.b-red{background:rgba(226,75,74,0.15);color:#f09595;border:1px solid rgba(226,75,74,0.3)}
+
+.wave{background:#0a1628;height:48px;overflow:hidden}
+.wave svg{display:block;width:100%}
+
+.sec{padding:56px 40px;border-bottom:1px solid #ebebeb;max-width:880px;margin:0 auto}
+.sec-tag{font-size:10px;font-weight:700;color:#378ADD;letter-spacing:1.8px;text-transform:uppercase;margin-bottom:8px}
+.sec h2{font-size:26px;font-weight:800;color:#0a1628;margin-bottom:5px;letter-spacing:-.5px}
+.sec-intro{font-size:13px;color:#999;margin-bottom:22px;line-height:1.6}
+.fonte{font-size:10px;color:#ccc;margin-top:6px}
+.fonte a{color:#378ADD}
+
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+.card{background:#F8F9FB;border:1px solid #eaeaea;border-radius:12px;padding:18px}
+.card-tag{font-size:10px;font-weight:700;letter-spacing:.5px;margin-bottom:8px}
+.ct-red{color:#E24B4A}.ct-blue{color:#0C447C}.ct-green{color:#1D9E75}
+.card h3{font-size:13px;font-weight:700;color:#1a1a1a;margin-bottom:5px}
+.card p{font-size:12px;color:#666;line-height:1.6}
+.card-rl{border-left:3px solid #E24B4A;border-radius:0 12px 12px 0}
+.card-bl{border-left:3px solid #0C447C;border-radius:0 12px 12px 0}
+.card-gl{border-left:3px solid #1D9E75;border-radius:0 12px 12px 0}
+
+.steps{display:flex;align-items:flex-start;gap:8px}
+.step{flex:1;background:#F8F9FB;border:1px solid #eaeaea;border-radius:12px;padding:20px;text-align:center}
+.snum{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin:0 auto 10px}
+.s1 .snum{background:#FCEBEB;color:#791F1F}
+.s2 .snum{background:#FAEEDA;color:#633806}
+.s3 .snum{background:#EAF3DE;color:#27500A}
+.step h3{font-size:13px;font-weight:700;margin-bottom:5px;color:#1a1a1a}
+.step p{font-size:12px;color:#777;line-height:1.5}
+.sarr{color:#ddd;font-size:24px;padding-top:20px;flex-shrink:0}
+
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.stat{text-align:center;padding:24px 12px;background:#F8F9FB;border-radius:12px;border:1px solid #eaeaea}
+.stn{font-size:32px;font-weight:900;color:#0a1628;letter-spacing:-1px;line-height:1}
+.stl{font-size:11px;color:#888;margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+
+.infra{background:#0a1628;padding:52px 40px}
+.infra-inner{max-width:880px;margin:0 auto}
+.infra .sec-tag{color:#378ADD}
+.infra h2{font-size:26px;font-weight:800;color:#fff;margin-bottom:5px;letter-spacing:-.5px}
+.infra .sec-intro{color:#556}
+.infra-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:20px}
+.infra-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:18px}
+.infra-card h3{font-size:13px;font-weight:700;color:#fff;margin-bottom:6px}
+.infra-card p{font-size:12px;color:#556;line-height:1.6}
+.infra-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.ii-blue{background:rgba(55,138,221,0.2)}
+.ii-green{background:rgba(29,158,117,0.2)}
+.ii-amber{background:rgba(186,117,23,0.2)}
+
+.nis2-box{background:#E6F1FB;border:1px solid #B5D4F4;border-radius:12px;padding:20px 24px;margin-top:14px}
+.nis2-box h3{font-size:13px;font-weight:700;color:#0C447C;margin-bottom:6px}
+.nis2-box p{font-size:12px;color:#185FA5;line-height:1.6}
+
+.team-card{background:#F8F9FB;border:1px solid #eaeaea;border-radius:12px;padding:22px;display:flex;gap:16px;align-items:flex-start}
+.av{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;flex-shrink:0}
+.av-d{background:#E6F1FB;color:#0C447C}
+.av-n{background:#EAF3DE;color:#27500A}
+.tn{font-size:16px;font-weight:700;color:#1a1a1a;margin-bottom:2px}
+.tr{font-size:11px;color:#378ADD;font-weight:700;letter-spacing:.4px;text-transform:uppercase;margin-bottom:7px}
+.td{font-size:12px;color:#666;line-height:1.6}
+
+footer{background:#0a1628;padding:32px 40px;text-align:center;border-top:1px solid rgba(255,255,255,0.05)}
+footer p{font-size:12px;color:#334}
+footer strong{color:#378ADD}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo-wrap">
+    <div class="logo-box">
+      <svg viewBox="0 0 20 20" fill="none">
+        <path d="M10 2L3.5 5.5V10c0 3.8 2.7 7 6.5 8.2C13.8 17 16.5 13.8 16.5 10V5.5L10 2z" fill="white"/>
+        <path d="M7 10l2.2 2.2L13 8" stroke="#378ADD" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <span class="logo-text">DN Security Labs</span>
+  </div>
+  <div>
+    <a href="#problema">Problema</a>
+    <a href="#demo">Demo</a>
+    <a href="#architettura">Architettura</a>
+    <a href="#nis2">NIS2</a>
+    <a href="#team">Team</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="pill"><div class="pill-dot"></div>ITS Cloud &amp; Security &mdash; Progetto Finale 2026</div>
+    <h1>Iron<em>Vault</em></h1>
+    <div class="hero-sub">Resilienza ransomware per le PMI italiane</div>
+    <p class="hero-p">Architettura ibrida on-premises + AWS con backup immutabile S3 Object Lock e ripristino automatico su EC2 in meno di 10 minuti. Progettata per lo Studio Contabilit&agrave; Milano. Conforme alla Direttiva NIS2.</p>
+    <div class="badges">
+      <span class="b b-blue">NIS2 Compliant</span>
+      <span class="b b-green">RTO &lt; 10 minuti</span>
+      <span class="b b-gray">AWS Free Tier</span>
+      <span class="b b-blue">S3 Object Lock WORM</span>
+      <span class="b b-red">Anti-ransomware</span>
+    </div>
+  </div>
+</div>
+
+<div class="wave">
+  <svg viewBox="0 0 1440 48" preserveAspectRatio="none" height="48">
+    <path d="M0 48V24C240 0 480 48 720 24S1200 0 1440 24V48H0Z" fill="#0a1628"/>
+  </svg>
+</div>
+
+<div class="sec" id="problema">
+  <div class="sec-tag">Il problema</div>
+  <h2>Le PMI italiane nel mirino</h2>
+  <p class="sec-intro">Dati verificati sul panorama ransomware in Italia &mdash; 2024</p>
+  <div class="g3">
+    <div class="card card-rl">
+      <div class="card-tag ct-red">DATO 01</div>
+      <h3>78% degli attacchi colpisce PMI</h3>
+      <p>Scarsa protezione IT rispetto alle grandi aziende le rende il bersaglio preferito dei gruppi ransomware.</p>
+      <div class="fonte">Fonte: <a href="https://www.clusit.it/rapporto-clusit/" target="_blank">Rapporto Clusit 2024</a></div>
+    </div>
+    <div class="card card-rl">
+      <div class="card-tag ct-red">DATO 02</div>
+      <h3>+65% attacchi gravi in Italia</h3>
+      <p>274 attacchi gravi nel 2023. L'Italia &egrave; tra i paesi europei pi&ugrave; colpiti, con il settore manifatturiero in testa.</p>
+      <div class="fonte">Fonte: <a href="https://www.clusit.it/rapporto-clusit/" target="_blank">Rapporto Clusit 2024</a></div>
+    </div>
+    <div class="card card-rl">
+      <div class="card-tag ct-red">DATO 03</div>
+      <h3>94% degli attacchi via email</h3>
+      <p>Il phishing &egrave; il vettore principale di infezione &mdash; il caso Laura della reception &egrave; un scenario realistico.</p>
+      <div class="fonte">Fonte: <a href="https://www.verizon.com/business/resources/reports/dbir/" target="_blank">Verizon DBIR 2024</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec" id="demo">
+  <div class="sec-tag">Come funziona la demo</div>
+  <h2>Tre fasi, dieci minuti</h2>
+  <p class="sec-intro">Il ciclo completo attacco &rarr; rilevamento &rarr; ripristino mostrato in tempo reale davanti alla commissione</p>
+  <div class="steps">
+    <div class="step s1">
+      <div class="snum">1</div>
+      <h3>Attacco ransomware</h3>
+      <p>Lo script cifra i file aziendali partendo dal PC di Laura. Le cartelle condivise su Windows Server diventano inaccessibili.</p>
+    </div>
+    <div class="sarr">&rarr;</div>
+    <div class="step s2">
+      <div class="snum">2</div>
+      <h3>Alert su Grafana</h3>
+      <p>Prometheus rileva il picco anomalo di I/O disco e attiva l'alert. Il backup S3 rimane intatto e inattaccabile.</p>
+    </div>
+    <div class="sarr">&rarr;</div>
+    <div class="step s3">
+      <div class="snum">3</div>
+      <h3>Recovery su EC2</h3>
+      <p>Un'istanza AWS t3.micro si avvia automaticamente e ripristina tutti i dati dal backup immutabile S3 in meno di 10 minuti.</p>
+    </div>
+  </div>
+</div>
+
+<div class="infra" id="architettura">
+  <div class="infra-inner">
+    <div class="sec-tag">Architettura</div>
+    <h2>Lo Studio Contabilit&agrave; Milano</h2>
+    <p class="sec-intro">Infrastruttura ibrida on-premises + cloud che simula una PMI italiana reale</p>
+    <div class="infra-grid">
+      <div class="infra-card">
+        <div class="infra-icon ii-blue">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="2" stroke="#378ADD" stroke-width="1.3"/><path d="M5 7h6M5 10h4" stroke="#378ADD" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+        <h3>Windows Server 2022</h3>
+        <p>Active Directory con dominio contabilita-milano.local, cartelle condivise, Group Policy NIS2, audit log Event Viewer.</p>
+      </div>
+      <div class="infra-card">
+        <div class="infra-icon ii-blue">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="8" rx="2" stroke="#378ADD" stroke-width="1.3"/><circle cx="8" cy="8" r="1.5" fill="#378ADD"/></svg>
+        </div>
+        <h3>PC Laura Bianchi</h3>
+        <p>Windows 10 Education unito al dominio. Punto di ingresso simulato del ransomware via phishing email.</p>
+      </div>
+      <div class="infra-card">
+        <div class="infra-icon ii-green">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="2" stroke="#1D9E75" stroke-width="1.3"/><path d="M5 8l2 2 4-4" stroke="#1D9E75" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Ubuntu Server 22.04</h3>
+        <p>File server con backup agent AWS CLI, cron job ogni ora, Grafana + Prometheus per il monitoraggio I/O.</p>
+      </div>
+      <div class="infra-card">
+        <div class="infra-icon ii-green">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2l2 4h4l-3 3 1 4-4-2.5L4 13l1-4L2 6h4L8 2z" fill="#1D9E75"/></svg>
+        </div>
+        <h3>S3 Object Lock WORM</h3>
+        <p>Bucket con modalit&agrave; COMPLIANCE attiva. Nessuno pu&ograve; cancellare i backup per 30 giorni &mdash; nemmeno con credenziali rubate.</p>
+      </div>
+      <div class="infra-card">
+        <div class="infra-icon ii-amber">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="6" rx="1.5" stroke="#BA7517" stroke-width="1.3"/><path d="M5 7V5a3 3 0 016 0v2" stroke="#BA7517" stroke-width="1.3" fill="none"/></svg>
+        </div>
+        <h3>IAM Least Privilege</h3>
+        <p>Utente pmi-backup-agent con solo PutObject su S3. Il DeleteObject &egrave; esplicitamente negato dalla policy.</p>
+      </div>
+      <div class="infra-card">
+        <div class="infra-icon ii-amber">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5" stroke="#BA7517" stroke-width="1.3"/><path d="M8 5v3l2 2" stroke="#BA7517" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+        <h3>EC2 t3.micro Recovery</h3>
+        <p>Istanza di emergenza in standby. Si avvia su comando, ripristina i dati da S3 e riporta l'azienda online.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec">
+  <div class="sec-tag">Risultati misurati</div>
+  <h2>La demo in numeri</h2>
+  <div class="stats">
+    <div class="stat">
+      <div class="stn">&lt;10'</div>
+      <div class="stl">Recovery Time Objective</div>
+      <div class="fonte">Misurato durante la demo live</div>
+    </div>
+    <div class="stat">
+      <div class="stn">0&thinsp;&euro;</div>
+      <div class="stl">Costo infrastruttura</div>
+      <div class="fonte"><a href="https://aws.amazon.com/free/" target="_blank">AWS Free Tier</a></div>
+    </div>
+    <div class="stat">
+      <div class="stn">30gg</div>
+      <div class="stl">Retention WORM garantita</div>
+      <div class="fonte"><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html" target="_blank">S3 Object Lock docs</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="sec" id="nis2">
+  <div class="sec-tag">Conformit&agrave; normativa</div>
+  <h2>NIS2 &mdash; cosa abbiamo implementato</h2>
+  <p class="sec-intro">Direttiva UE 2022/2555, recepita in Italia con D.Lgs. 138/2024 &mdash; in vigore dal 1&deg; gennaio 2025</p>
+  <div class="g3">
+    <div class="card card-bl">
+      <div class="card-tag ct-blue">ART. 21</div>
+      <h3>Continuit&agrave; operativa</h3>
+      <p>RTO documentato e dimostrabile con recovery automatico su EC2. Ripristino in meno di 10 minuti.</p>
+      <div class="fonte">Fonte: <a href="https://eur-lex.europa.eu/legal-content/IT/TXT/?uri=CELEX:32022L2555" target="_blank">Direttiva UE 2022/2555</a></div>
+    </div>
+    <div class="card card-bl">
+      <div class="card-tag ct-blue">ART. 21</div>
+      <h3>Backup e ripristino</h3>
+      <p>S3 Object Lock COMPLIANCE con retention 30 giorni. Nessuno pu&ograve; cancellare i backup, nemmeno root AWS.</p>
+      <div class="fonte">Fonte: <a href="https://eur-lex.europa.eu/legal-content/IT/TXT/?uri=CELEX:32022L2555" target="_blank">Direttiva UE 2022/2555</a></div>
+    </div>
+    <div class="card card-bl">
+      <div class="card-tag ct-blue">ART. 21</div>
+      <h3>Controllo degli accessi</h3>
+      <p>IAM Least Privilege su AWS e Active Directory con Group Policy su tutta la rete Windows aziendale.</p>
+      <div class="fonte">Fonte: <a href="https://eur-lex.europa.eu/legal-content/IT/TXT/?uri=CELEX:32022L2555" target="_blank">Direttiva UE 2022/2555</a></div>
+    </div>
+  </div>
+  <div class="nis2-box">
+    <h3>Nota sul recepimento italiano</h3>
+    <p>Il D.Lgs. 138/2024 ha recepito la NIS2 in Italia con piena efficacia dal 1&deg; gennaio 2025. Le sanzioni per inadempienza arrivano fino al 2% del fatturato globale annuo. Gli studi professionali che erogano servizi essenziali rientrano nell'ambito di applicazione.</p>
+  </div>
+</div>
+
+<div class="sec" id="team">
+  <div class="sec-tag">Il team</div>
+  <h2>DN Security Labs</h2>
+  <p class="sec-intro">Studenti ITS Cloud &amp; Security &mdash; Anno accademico 2025/2026</p>
+  <div class="g2">
+    <div class="team-card">
+      <div class="av av-d">D</div>
+      <div>
+        <div class="tn">Diego</div>
+        <div class="tr">Cloud &amp; Infrastructure</div>
+        <div class="td">Architettura AWS, bucket S3 con Object Lock, IAM Roles e policy Least Privilege, monitoring Grafana + Prometheus, disaster recovery su EC2 t3.micro, script simulazione attacco ransomware.</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="av av-n">N</div>
+      <div>
+        <div class="tn">Naween</div>
+        <div class="tr">Windows &amp; Security</div>
+        <div class="td">Infrastruttura Windows Server 2022, Active Directory con dominio aziendale, Group Policy conformi NIS2, cartelle personali con permessi, audit log Event Viewer, analisi impatto e conformit&agrave; normativa.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p><strong>DN Security Labs</strong> &mdash; ITS Cloud &amp; Security 2026 &mdash; Progetto IronVault</p>
+</footer>
+
+</body>
+</html>
