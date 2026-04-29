@@ -1,0 +1,33 @@
+# ================================================================
+# IronVault — Regole di Alerting Prometheus
+# DN Security Labs — ITS Academy Tech Talent Factory 2024-2026
+# ================================================================
+# Soglia: scrittura disco > 1 MB/s per 5 secondi = possibile ransomware
+# ================================================================
+
+groups:
+  - name: ironvault_alerts
+    rules:
+
+      - alert: AltaAttivitaDisco
+        expr: rate(node_disk_written_bytes_total[1m]) > 1048576
+        for: 0s
+        labels:
+          severity: critical
+          team: ironvault
+        annotations:
+          summary: "IRONVAULT ALERT — Alta attivita disco rilevata"
+          description: >
+            Velocita di scrittura su disco: {{ humanize $value }}B/s.
+            Possibile attacco ransomware in corso su PMI-FileServer.
+            Verificare immediatamente /opt/pmi/ e /var/www/html/.
+            Comando recovery: time bash /home/ubuntu/recovery.sh
+
+      - alert: SistemaNonRaggiungibile
+        expr: up{job="node-exporter"} == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "IRONVAULT ALERT — PMI-FileServer non raggiungibile"
+          description: "Node Exporter non risponde da 30 secondi."
