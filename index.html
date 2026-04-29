@@ -5,276 +5,893 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DN Security Labs — IronVault</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--navy:#080F1E;--navy2:#0D1829;--navy3:#142035;--blu:#0C447C;--blu-m:#1C7293;--blu-a:#4DA8DA;--verde:#1D9E75;--rosso:#C0392B;--amber:#D68910;--grigio:#8A9BB0;--testo:#E8EFF7;--bordo:rgba(77,168,218,0.15);--mono:'Space Mono',monospace;--sans:'DM Sans',sans-serif}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--navy);color:var(--testo);font-family:var(--sans);font-size:16px;line-height:1.7;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--bordo) 1px,transparent 1px),linear-gradient(90deg,var(--bordo) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,15,30,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--bordo)}
-.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-badge{width:36px;height:36px;background:var(--blu-m);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:700;color:white;letter-spacing:1px}
-.nav-name{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--testo);letter-spacing:1px}
-.nav-links{display:flex;gap:2rem;list-style:none}
-.nav-links a{font-size:13px;color:var(--grigio);text-decoration:none;transition:color .2s;font-family:var(--mono);letter-spacing:.5px}
-.nav-links a:hover{color:var(--blu-a)}
-.hero{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;padding:80px 2rem 4rem;max-width:1100px;margin:0 auto}
-.hero-inner{max-width:700px}
-.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(28,114,147,0.12);border:1px solid rgba(28,114,147,0.3);border-radius:100px;padding:6px 16px;font-family:var(--mono);font-size:11px;color:var(--blu-a);letter-spacing:1px;margin-bottom:2rem}
-.hero-tag::before{content:'';width:6px;height:6px;background:var(--verde);border-radius:50%;animation:blink 2s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-.hero h1{font-family:var(--mono);font-size:clamp(3rem,8vw,5.5rem);font-weight:700;line-height:1.05;letter-spacing:-2px;margin-bottom:1.5rem}
-.hero h1 .vault{color:var(--blu-a)}
-.hero-sub{font-size:1.15rem;color:var(--grigio);font-weight:300;max-width:520px;margin-bottom:2.5rem;line-height:1.8}
-.hero-metrics{display:flex;gap:2rem;margin-bottom:3rem;flex-wrap:wrap}
-.metric{display:flex;flex-direction:column}
-.metric-val{font-family:var(--mono);font-size:1.8rem;font-weight:700;color:var(--testo);line-height:1}
-.metric-val.green{color:var(--verde)}
-.metric-val.blue{color:var(--blu-a)}
-.metric-label{font-size:11px;color:var(--grigio);letter-spacing:1px;text-transform:uppercase;font-family:var(--mono);margin-top:4px}
-.hero-cta{display:flex;gap:1rem;flex-wrap:wrap}
-.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--blu-m);color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:.5px;transition:background .2s,transform .15s}
-.btn-primary:hover{background:var(--blu-a);transform:translateY(-2px)}
-.btn-secondary{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--blu-a);padding:12px 24px;border-radius:8px;border:1px solid rgba(77,168,218,0.3);text-decoration:none;font-family:var(--mono);font-size:13px;letter-spacing:.5px;transition:border-color .2s,background .2s}
-.btn-secondary:hover{border-color:var(--blu-a);background:rgba(77,168,218,0.05)}
-section{position:relative;z-index:1;padding:5rem 2rem;max-width:1100px;margin:0 auto}
-.section-label{font-family:var(--mono);font-size:11px;color:var(--blu-a);letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem}
-.section-title{font-family:var(--mono);font-size:clamp(1.8rem,4vw,2.5rem);font-weight:700;color:var(--testo);line-height:1.2;margin-bottom:1rem}
-.section-sub{color:var(--grigio);font-size:1rem;max-width:560px;margin-bottom:3rem;line-height:1.8}
-.divider{width:100%;height:1px;background:var(--bordo);margin:0}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-bottom:3rem}
-.stat-card{background:var(--navy2);border:1px solid var(--bordo);border-radius:12px;padding:2rem 1.5rem;position:relative;overflow:hidden;transition:border-color .2s}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
-.stat-card.red::before{background:var(--rosso)}
-.stat-card.blue::before{background:var(--blu-a)}
-.stat-card.green::before{background:var(--verde)}
-.stat-card:hover{border-color:rgba(77,168,218,0.3)}
-.stat-num{font-family:var(--mono);font-size:2.8rem;font-weight:700;line-height:1;margin-bottom:.5rem}
-.stat-card.red .stat-num{color:var(--rosso)}
-.stat-card.blue .stat-num{color:var(--blu-a)}
-.stat-card.green .stat-num{color:var(--verde)}
-.stat-desc{font-size:.875rem;color:var(--grigio);line-height:1.5}
-.alert-box{background:rgba(192,57,43,0.08);border:1px solid rgba(192,57,43,0.25);border-radius:10px;padding:1.25rem 1.5rem;font-size:.9rem;color:#e88;line-height:1.7}
-.arch-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:3rem}
-@media(max-width:700px){.arch-grid{grid-template-columns:1fr}}
-.arch-card{background:var(--navy2);border:1px solid var(--bordo);border-radius:12px;padding:1.75rem;transition:border-color .2s}
-.arch-card:hover{border-color:rgba(77,168,218,0.3)}
-.arch-card-header{display:flex;align-items:center;gap:10px;margin-bottom:1.25rem}
-.arch-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.arch-card-title{font-family:var(--mono);font-size:.9rem;font-weight:700;color:var(--testo);letter-spacing:.5px}
-.arch-items{list-style:none;display:flex;flex-direction:column;gap:.6rem}
-.arch-items li{font-size:.875rem;color:var(--grigio);display:flex;align-items:flex-start;gap:8px;line-height:1.5}
-.arch-items li::before{content:'›';color:var(--blu-a);font-weight:700;flex-shrink:0;margin-top:1px}
-.protection-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
-.protection-card{background:var(--navy2);border:1px solid var(--bordo);border-radius:10px;padding:1.25rem 1.5rem;display:flex;gap:1rem;align-items:flex-start;transition:border-color .2s}
-.protection-card:hover{border-color:rgba(29,158,117,0.4)}
-.protection-icon{width:36px;height:36px;background:rgba(29,158,117,0.12);border:1px solid rgba(29,158,117,0.25);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.protection-body h4{font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--testo);margin-bottom:.3rem;letter-spacing:.5px}
-.protection-body p{font-size:.8rem;color:var(--grigio);line-height:1.5}
-.nis2-table{width:100%;border-collapse:collapse;font-size:.875rem}
-.nis2-table th{font-family:var(--mono);font-size:.75rem;letter-spacing:1px;text-transform:uppercase;color:var(--blu-a);text-align:left;padding:.75rem 1rem;border-bottom:1px solid var(--bordo)}
-.nis2-table td{padding:.85rem 1rem;border-bottom:1px solid rgba(77,168,218,0.06);color:var(--grigio);line-height:1.5}
-.nis2-table td:first-child{color:var(--testo);font-weight:500}
-.nis2-table tr:hover td{background:rgba(77,168,218,0.03)}
-.badge-ok{display:inline-flex;align-items:center;gap:5px;background:rgba(29,158,117,0.12);border:1px solid rgba(29,158,117,0.25);color:var(--verde);padding:2px 10px;border-radius:100px;font-family:var(--mono);font-size:.7rem;font-weight:700;letter-spacing:.5px;white-space:nowrap}
-.badge-ok::before{content:'✓'}
-.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
-.team-card{background:var(--navy2);border:1px solid var(--bordo);border-radius:12px;padding:2rem;transition:border-color .2s,transform .2s}
-.team-card:hover{border-color:rgba(77,168,218,0.3);transform:translateY(-4px)}
-.team-avatar{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:20px;font-weight:700;color:white;margin-bottom:1.25rem}
-.team-name{font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--testo);margin-bottom:.25rem;letter-spacing:.5px}
-.team-role{font-size:.8rem;color:var(--blu-a);font-family:var(--mono);letter-spacing:.5px;margin-bottom:1rem}
-.team-skills{display:flex;flex-wrap:wrap;gap:.4rem}
-.skill-tag{background:rgba(12,68,124,0.25);border:1px solid rgba(77,168,218,0.2);color:var(--blu-a);padding:3px 10px;border-radius:100px;font-size:.72rem;font-family:var(--mono);letter-spacing:.3px}
-.demo-steps{display:flex;flex-direction:column;gap:.75rem}
-.demo-step{display:flex;gap:1rem;align-items:flex-start;background:var(--navy2);border:1px solid var(--bordo);border-radius:10px;padding:1rem 1.25rem;transition:border-color .2s}
-.demo-step:hover{border-color:rgba(77,168,218,0.25)}
-.step-num{font-family:var(--mono);font-size:.75rem;font-weight:700;color:var(--blu-a);background:rgba(77,168,218,0.1);border:1px solid rgba(77,168,218,0.2);width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.step-content h4{font-family:var(--mono);font-size:.85rem;font-weight:700;color:var(--testo);margin-bottom:.2rem;letter-spacing:.3px}
-.step-content p{font-size:.85rem;color:var(--grigio);line-height:1.5}
-.results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem}
-.result-card{background:var(--navy3);border:1px solid var(--bordo);border-radius:10px;padding:1.5rem;text-align:center}
-.result-val{font-family:var(--mono);font-size:2rem;font-weight:700;color:var(--verde);line-height:1;margin-bottom:.4rem}
-.result-label{font-size:.75rem;color:var(--grigio);font-family:var(--mono);letter-spacing:.5px;text-transform:uppercase}
-footer{position:relative;z-index:1;border-top:1px solid var(--bordo);padding:3rem 2rem;max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
-.footer-left{display:flex;align-items:center;gap:10px}
-.footer-text{font-family:var(--mono);font-size:.8rem;color:var(--grigio)}
-.footer-links{display:flex;gap:1.5rem}
-.footer-links a{font-family:var(--mono);font-size:.75rem;color:var(--grigio);text-decoration:none;transition:color .2s;letter-spacing:.5px}
-.footer-links a:hover{color:var(--blu-a)}
-.reveal{opacity:0;transform:translateY(30px);transition:opacity .6s ease,transform .6s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
+:root {
+  --ink:     #0A0F1A;
+  --ink2:    #141B2D;
+  --ink3:    #1E2940;
+  --steel:   #2A3F5F;
+  --blu:     #1A5FA8;
+  --blu-a:   #3B8FE8;
+  --blu-ch:  rgba(59,143,232,0.08);
+  --blu-b:   rgba(59,143,232,0.18);
+  --verde:   #0E8A5F;
+  --verde-ch:rgba(14,138,95,0.1);
+  --oro:     #C8951A;
+  --oro-ch:  rgba(200,149,26,0.1);
+  --rosso:   #C03030;
+  --grigio:  #6B7A94;
+  --bordo:   rgba(255,255,255,0.08);
+  --testo:   #E2EAF4;
+  --testo2:  #8A9BB8;
+  --serif:   'Cormorant Garamond', Georgia, serif;
+  --mono:    'DM Mono', 'Fira Mono', monospace;
+  --sans:    'DM Sans', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ink);
+  color: var(--testo);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── GRAIN OVERLAY ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.4;
+}
+
+/* ── GRID LINES ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(59,143,232,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59,143,232,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── NAVBAR ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 62px;
+  padding: 0 3rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(10,15,26,0.82);
+  backdrop-filter: blur(20px) saturate(1.4);
+  border-bottom: 1px solid var(--bordo);
+}
+
+.nav-logo-wrap {
+  display: flex; align-items: center; gap: 11px;
+  text-decoration: none;
+}
+.nav-emblem {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--blu) 0%, var(--blu-a) 100%);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono);
+  font-size: 11px; font-weight: 500; color: white;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+.nav-emblem::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: rgba(255,255,255,0.3);
+}
+.nav-wordmark {
+  font-family: var(--mono);
+  font-size: 13px; font-weight: 500;
+  color: var(--testo);
+  letter-spacing: 0.8px;
+}
+.nav-wordmark span { color: var(--blu-a); }
+
+.nav-menu {
+  display: flex; gap: 0; list-style: none;
+}
+.nav-menu a {
+  display: block;
+  padding: 0 1.1rem;
+  height: 62px; line-height: 62px;
+  font-size: 12.5px; font-weight: 500;
+  color: var(--testo2);
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  font-family: var(--mono);
+  transition: color .2s;
+  position: relative;
+}
+.nav-menu a::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 1.1rem; right: 1.1rem;
+  height: 1.5px;
+  background: var(--blu-a);
+  transform: scaleX(0);
+  transition: transform .2s;
+}
+.nav-menu a:hover { color: var(--testo); }
+.nav-menu a:hover::after { transform: scaleX(1); }
+
+.nav-cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--blu);
+  color: white;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 12px; font-weight: 500;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: background .2s;
+}
+.nav-cta:hover { background: var(--blu-a); }
+
+/* ── HERO ── */
+.hero {
+  position: relative; z-index: 1;
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 100px 3rem 5rem;
+  max-width: 1200px; margin: 0 auto;
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px; font-weight: 500;
+  color: var(--blu-a);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 1.75rem;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 24px; height: 1px;
+  background: var(--blu-a);
+}
+
+.hero-headline {
+  font-family: var(--serif);
+  font-size: clamp(3.5rem, 8vw, 6.5rem);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -1px;
+  color: var(--testo);
+  margin-bottom: 1.5rem;
+}
+.hero-headline em {
+  font-style: normal;
+  color: var(--blu-a);
+  font-weight: 400;
+}
+.hero-headline .line2 {
+  display: block;
+  padding-left: 4rem;
+}
+
+.hero-body {
+  font-size: 1.05rem;
+  color: var(--testo2);
+  max-width: 520px;
+  margin-bottom: 3rem;
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+.hero-metrics {
+  display: flex; gap: 0;
+  border: 1px solid var(--bordo);
+  border-radius: 10px;
+  overflow: hidden;
+  width: fit-content;
+  margin-bottom: 2.5rem;
+}
+.hero-metric {
+  padding: 1.1rem 2rem;
+  border-right: 1px solid var(--bordo);
+}
+.hero-metric:last-child { border-right: none; }
+.hero-metric-val {
+  font-family: var(--mono);
+  font-size: 1.6rem; font-weight: 500;
+  color: var(--testo);
+  line-height: 1;
+  display: block; margin-bottom: 4px;
+}
+.hero-metric-val.g { color: var(--verde); }
+.hero-metric-val.b { color: var(--blu-a); }
+.hero-metric-label {
+  font-family: var(--mono);
+  font-size: 10px; font-weight: 400;
+  color: var(--testo2);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.hero-actions {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+}
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: transparent;
+  color: var(--testo2);
+  padding: 10px 20px;
+  border-radius: 7px;
+  border: 1px solid var(--bordo);
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: 12.5px; font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: border-color .2s, color .2s;
+}
+.btn-ghost:hover { border-color: rgba(255,255,255,0.2); color: var(--testo); }
+.btn-solid {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--blu);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: 12.5px; font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: background .2s, transform .15s;
+}
+.btn-solid:hover { background: var(--blu-a); transform: translateY(-1px); }
+
+/* ── DIVIDER ── */
+.rule {
+  border: none;
+  border-top: 1px solid var(--bordo);
+  margin: 0;
+}
+
+/* ── SECTIONS ── */
+.section {
+  position: relative; z-index: 1;
+  padding: 5.5rem 3rem;
+  max-width: 1200px; margin: 0 auto;
+}
+
+.section-kicker {
+  font-family: var(--mono);
+  font-size: 10.5px; font-weight: 500;
+  color: var(--blu-a);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-kicker::before {
+  content: '';
+  width: 20px; height: 1px;
+  background: var(--blu-a);
+}
+.section-heading {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400;
+  color: var(--testo);
+  line-height: 1.15;
+  margin-bottom: 0.75rem;
+}
+.section-sub {
+  font-size: 0.95rem;
+  color: var(--testo2);
+  max-width: 540px;
+  margin-bottom: 3rem;
+  font-weight: 300;
+  line-height: 1.8;
+}
+
+/* ── STATS GRID ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px;
+  background: var(--bordo);
+  border: 1px solid var(--bordo);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 3rem;
+}
+.stat-cell {
+  background: var(--ink2);
+  padding: 2rem 1.75rem;
+  position: relative;
+  overflow: hidden;
+  transition: background .2s;
+}
+.stat-cell:hover { background: var(--ink3); }
+.stat-cell::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.stat-cell.r::before { background: var(--rosso); }
+.stat-cell.b::before { background: var(--blu-a); }
+.stat-cell.g::before { background: var(--verde); }
+.stat-cell.o::before { background: var(--oro); }
+
+.stat-num {
+  font-family: var(--mono);
+  font-size: 2.4rem; font-weight: 500;
+  line-height: 1; margin-bottom: 0.5rem;
+  display: block;
+}
+.stat-cell.r .stat-num { color: var(--rosso); }
+.stat-cell.b .stat-num { color: var(--blu-a); }
+.stat-cell.g .stat-num { color: var(--verde); }
+.stat-cell.o .stat-num { color: var(--oro); }
+.stat-desc {
+  font-size: 13px; color: var(--testo2);
+  line-height: 1.5; font-weight: 300;
+}
+
+/* ── ARCH GRID ── */
+.arch-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+@media (max-width: 720px) { .arch-two { grid-template-columns: 1fr; } }
+
+.arch-panel {
+  background: var(--ink2);
+  border: 1px solid var(--bordo);
+  border-radius: 12px;
+  padding: 1.75rem;
+  transition: border-color .25s;
+}
+.arch-panel:hover { border-color: rgba(59,143,232,0.25); }
+
+.arch-panel-tag {
+  font-family: var(--mono);
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.arch-panel-title {
+  font-family: var(--serif);
+  font-size: 1.15rem; font-weight: 500;
+  color: var(--testo); margin-bottom: 1.25rem;
+}
+.arch-list {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.arch-list li {
+  font-size: 13.5px; color: var(--testo2);
+  display: flex; align-items: flex-start; gap: 9px;
+  line-height: 1.5;
+}
+.arch-list li::before {
+  content: '›';
+  color: var(--blu-a);
+  font-weight: 500; flex-shrink: 0;
+}
+
+/* ── PROTEZIONI ── */
+.shield-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+.shield-card {
+  background: var(--ink2);
+  border: 1px solid var(--bordo);
+  border-radius: 10px;
+  padding: 1.4rem 1.5rem;
+  display: flex; gap: 1rem;
+  transition: border-color .2s, background .2s;
+}
+.shield-card:hover {
+  border-color: rgba(14,138,95,0.35);
+  background: var(--ink3);
+}
+.shield-icon {
+  width: 38px; height: 38px; flex-shrink: 0;
+  border-radius: 8px;
+  background: var(--verde-ch);
+  border: 1px solid rgba(14,138,95,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+}
+.shield-body h4 {
+  font-family: var(--mono);
+  font-size: 12px; font-weight: 500;
+  color: var(--testo); margin-bottom: 4px;
+  letter-spacing: 0.4px;
+}
+.shield-body p {
+  font-size: 13px; color: var(--testo2);
+  line-height: 1.55; font-weight: 300;
+}
+
+/* ── DEMO ── */
+.demo-flow {
+  display: flex; flex-direction: column; gap: 0;
+  border: 1px solid var(--bordo);
+  border-radius: 12px; overflow: hidden;
+}
+.demo-row {
+  display: flex; gap: 0; align-items: stretch;
+  border-bottom: 1px solid var(--bordo);
+  background: var(--ink2);
+  transition: background .2s;
+}
+.demo-row:last-child { border-bottom: none; }
+.demo-row:hover { background: var(--ink3); }
+.demo-num {
+  width: 64px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono);
+  font-size: 11px; font-weight: 500;
+  color: var(--blu-a);
+  border-right: 1px solid var(--bordo);
+  padding: 1.25rem 0;
+  letter-spacing: 0.5px;
+}
+.demo-content {
+  padding: 1.25rem 1.5rem;
+  flex: 1;
+}
+.demo-content h4 {
+  font-family: var(--mono);
+  font-size: 13px; font-weight: 500;
+  color: var(--testo); margin-bottom: 4px;
+  letter-spacing: 0.3px;
+}
+.demo-content p {
+  font-size: 13px; color: var(--testo2);
+  font-weight: 300; line-height: 1.55;
+}
+.demo-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--mono);
+  font-size: 10px; font-weight: 500;
+  padding: 3px 9px; border-radius: 100px;
+  margin-top: 6px;
+  letter-spacing: 0.5px;
+}
+.demo-badge.attack { background: rgba(192,48,48,0.12); color: #e07070; }
+.demo-badge.defend { background: rgba(14,138,95,0.12); color: #4ec9a0; }
+.demo-badge.recover { background: rgba(59,143,232,0.12); color: var(--blu-a); }
+
+/* ── NIS2 TABLE ── */
+.nis2-wrap {
+  background: var(--ink2);
+  border: 1px solid var(--bordo);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.nis2-table { width: 100%; border-collapse: collapse; }
+.nis2-table th {
+  font-family: var(--mono);
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--testo2);
+  padding: 0.875rem 1.5rem;
+  text-align: left;
+  background: var(--ink3);
+  border-bottom: 1px solid var(--bordo);
+}
+.nis2-table td {
+  padding: 0.95rem 1.5rem;
+  font-size: 13.5px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--testo2); line-height: 1.5;
+}
+.nis2-table td:first-child { color: var(--testo); font-weight: 500; }
+.nis2-table tr:last-child td { border-bottom: none; }
+.nis2-table tr:hover td { background: rgba(255,255,255,0.02); }
+.pill-ok {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--verde-ch);
+  border: 1px solid rgba(14,138,95,0.2);
+  color: #4ec9a0;
+  padding: 3px 10px; border-radius: 100px;
+  font-family: var(--mono);
+  font-size: 10px; font-weight: 500;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+}
+.pill-ok::before { content: '✓'; }
+
+/* ── RISULTATI ── */
+.results-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1px;
+  background: var(--bordo);
+  border: 1px solid var(--bordo);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.result-cell {
+  background: var(--ink2);
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+  transition: background .2s;
+}
+.result-cell:hover { background: var(--ink3); }
+.result-val {
+  font-family: var(--mono);
+  font-size: 1.8rem; font-weight: 500;
+  color: var(--verde);
+  line-height: 1; margin-bottom: 6px;
+  display: block;
+}
+.result-label {
+  font-family: var(--mono);
+  font-size: 10px; color: var(--testo2);
+  letter-spacing: 1.5px; text-transform: uppercase;
+}
+
+/* ── TEAM ── */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+.team-card {
+  background: var(--ink2);
+  border: 1px solid var(--bordo);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: border-color .25s, transform .2s;
+}
+.team-card:hover {
+  border-color: rgba(59,143,232,0.3);
+  transform: translateY(-3px);
+}
+.team-avatar {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono);
+  font-size: 16px; font-weight: 500;
+  color: white; margin-bottom: 1.25rem;
+}
+.team-name {
+  font-family: var(--serif);
+  font-size: 1.3rem; font-weight: 500;
+  color: var(--testo); margin-bottom: 3px;
+}
+.team-role {
+  font-family: var(--mono);
+  font-size: 11px; font-weight: 500;
+  color: var(--blu-a); letter-spacing: 1px;
+  text-transform: uppercase; margin-bottom: 1.25rem;
+}
+.tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.tag {
+  background: rgba(59,143,232,0.1);
+  border: 1px solid rgba(59,143,232,0.15);
+  color: var(--testo2);
+  padding: 3px 10px; border-radius: 100px;
+  font-family: var(--mono);
+  font-size: 10.5px; letter-spacing: 0.3px;
+}
+
+/* ── FOOTER ── */
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--bordo);
+  padding: 2.5rem 3rem;
+  max-width: 1200px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 1rem;
+}
+.footer-brand {
+  display: flex; align-items: center; gap: 10px;
+}
+.footer-copy {
+  font-family: var(--mono);
+  font-size: 12px; color: var(--testo2);
+}
+.footer-links {
+  display: flex; gap: 1.5rem;
+}
+.footer-links a {
+  font-family: var(--mono);
+  font-size: 11.5px; color: var(--testo2);
+  text-decoration: none; letter-spacing: 0.5px;
+  transition: color .2s;
+}
+.footer-links a:hover { color: var(--blu-a); }
+
+/* ── REVEAL ── */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity .65s cubic-bezier(.16,1,.3,1), transform .65s cubic-bezier(.16,1,.3,1);
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
+
+<!-- NAVBAR -->
 <nav>
-  <a href="#" class="nav-logo">
-    <div class="nav-badge">DN</div>
-    <span class="nav-name">Security Labs</span>
+  <a href="#" class="nav-logo-wrap">
+    <div class="nav-emblem">DN</div>
+    <span class="nav-wordmark">DN <span>Security</span> Labs</span>
   </a>
-  <ul class="nav-links">
+  <ul class="nav-menu">
     <li><a href="#problema">Problema</a></li>
     <li><a href="#soluzione">Soluzione</a></li>
     <li><a href="#demo">Demo</a></li>
+    <li><a href="#nis2">NIS2</a></li>
     <li><a href="#team">Team</a></li>
-    <li><a href="https://github.com/Diegoservadio/ironvault" target="_blank">GitHub ↗</a></li>
   </ul>
+  <a href="https://github.com/Diegoservadio/ironvault" target="_blank" class="nav-cta">GitHub ↗</a>
 </nav>
 
+<!-- HERO -->
 <div class="hero">
-  <div class="hero-inner">
-    <div class="hero-tag">ITS Academy Tech Talent Factory — Progetto Finale 2026</div>
-    <h1><span class="iron">Iron</span><span class="vault">Vault</span></h1>
-    <p class="hero-sub">Resilienza ransomware per le PMI italiane. Architettura ibrida cloud air-gap con AWS S3 Object Lock e disaster recovery automatico su EC2.</p>
-    <div class="hero-metrics">
-      <div class="metric"><span class="metric-val green">~2 min</span><span class="metric-label">RTO misurato</span></div>
-      <div class="metric"><span class="metric-val blue">60 min</span><span class="metric-label">RPO massimo</span></div>
-      <div class="metric"><span class="metric-val">15 €</span><span class="metric-label">Costo mensile</span></div>
-      <div class="metric"><span class="metric-val green">NIS2</span><span class="metric-label">Art. 21 compliant</span></div>
+  <div class="hero-eyebrow">ITS Academy Tech Talent Factory — Progetto finale 2026</div>
+  <h1 class="hero-headline">
+    Iron<em>Vault</em>
+    <span class="line2">Resilienza</span>
+  </h1>
+  <p class="hero-body">
+    Architettura ibrida cloud air-gap per la protezione delle PMI italiane contro il ransomware. Backup immutabile su AWS S3 Object Lock. Disaster recovery automatico su EC2 in meno di 2 minuti.
+  </p>
+  <div class="hero-metrics">
+    <div class="hero-metric">
+      <span class="hero-metric-val g">~2 min</span>
+      <span class="hero-metric-label">RTO misurato</span>
     </div>
-    <div class="hero-cta">
-      <a href="#demo" class="btn-primary">Vedi la demo →</a>
-      <a href="https://github.com/Diegoservadio/ironvault" target="_blank" class="btn-secondary">GitHub ↗</a>
+    <div class="hero-metric">
+      <span class="hero-metric-val b">60 min</span>
+      <span class="hero-metric-label">RPO massimo</span>
     </div>
+    <div class="hero-metric">
+      <span class="hero-metric-val">15 €</span>
+      <span class="hero-metric-label">Costo / mese</span>
+    </div>
+    <div class="hero-metric">
+      <span class="hero-metric-val g">NIS2</span>
+      <span class="hero-metric-label">Art. 21</span>
+    </div>
+  </div>
+  <div class="hero-actions">
+    <a href="#demo" class="btn-solid">Vedi la demo →</a>
+    <a href="https://github.com/Diegoservadio/ironvault" target="_blank" class="btn-ghost">GitHub ↗</a>
   </div>
 </div>
 
-<div class="divider"></div>
+<hr class="rule">
 
-<section id="problema">
+<!-- PROBLEMA -->
+<section class="section" id="problema">
   <div class="reveal">
-    <div class="section-label">01 — Il Problema</div>
-    <h2 class="section-title">Le PMI italiane nel mirino</h2>
-    <p class="section-sub">Il 78% degli attacchi ransomware colpisce PMI. Il costo medio supera i 20.000 euro. Il 60% chiude entro 6 mesi dall'attacco.</p>
+    <div class="section-kicker">01 — Il problema</div>
+    <h2 class="section-heading">Le PMI italiane<br>nel mirino</h2>
+    <p class="section-sub">Il ransomware è la minaccia numero uno per il tessuto produttivo italiano. La grande maggioranza delle vittime non ha strumenti di protezione adeguati.</p>
   </div>
   <div class="stats-grid reveal">
-    <div class="stat-card red"><div class="stat-num">78%</div><div class="stat-desc">degli attacchi colpisce PMI — senza IT interno</div></div>
-    <div class="stat-card red"><div class="stat-num">+65%</div><div class="stat-desc">crescita attacchi gravi in Italia nel 2023</div></div>
-    <div class="stat-card blue"><div class="stat-num">94%</div><div class="stat-desc">degli attacchi parte da email di phishing</div></div>
-    <div class="stat-card green"><div class="stat-num">20k€</div><div class="stat-desc">costo medio attacco per PMI italiana</div></div>
-  </div>
-  <div class="alert-box reveal">Fonti: Rapporto Clusit 2024 | Verizon DBIR 2024 | IBM Cost of Data Breach 2024 — Dal 1 gennaio 2025 la Direttiva NIS2 (D.Lgs. 138/2024) impone obblighi di backup e continuità operativa. Sanzioni fino al 2% del fatturato globale.</div>
-</section>
-
-<div class="divider"></div>
-
-<section id="soluzione">
-  <div class="reveal">
-    <div class="section-label">02 — La Soluzione</div>
-    <h2 class="section-title">Architettura IronVault</h2>
-    <p class="section-sub">Infrastruttura ibrida on-premises + AWS con backup immutabile e disaster recovery automatico. Costo ~15 euro/mese per una PMI reale.</p>
-  </div>
-  <div class="arch-grid reveal">
-    <div class="arch-card">
-      <div class="arch-card-header"><div class="arch-dot" style="background:var(--blu-a)"></div><span class="arch-card-title">ON-PREMISES — VMware</span></div>
-      <ul class="arch-items">
-        <li>Ubuntu Server 22.04 — file server + backup agent + Grafana SOC</li>
-        <li>Windows Server 2022 — Active Directory + GPO IronVault</li>
-        <li>Windows 10 — postazione Laura Bianchi (punto attacco)</li>
-        <li>Apache2 — intranet aziendale Studio Contabilità Milano</li>
-        <li>Backup automatico ogni ora via cron su S3</li>
-      </ul>
+    <div class="stat-cell r">
+      <span class="stat-num">78%</span>
+      <div class="stat-desc">degli attacchi ransomware colpisce PMI — spesso senza IT interno</div>
     </div>
-    <div class="arch-card">
-      <div class="arch-card-header"><div class="arch-dot" style="background:var(--verde)"></div><span class="arch-card-title">AWS CLOUD — eu-north-1</span></div>
-      <ul class="arch-items">
-        <li>S3 Object Lock COMPLIANCE 30gg — backup WORM inviolabile</li>
-        <li>IAM Least Privilege — DENY esplicito su DeleteObject</li>
-        <li>Bucket Policy — DENY assoluto anche per admin console</li>
-        <li>EC2 t3.micro standby — recovery in ~2 minuti</li>
-        <li>CloudWatch + SNS — alert accessi non autorizzati</li>
-      </ul>
+    <div class="stat-cell r">
+      <span class="stat-num">+65%</span>
+      <div class="stat-desc">crescita attacchi gravi in Italia nel 2023 rispetto all'anno precedente</div>
+    </div>
+    <div class="stat-cell b">
+      <span class="stat-num">94%</span>
+      <div class="stat-desc">degli attacchi parte da una email di phishing — il vettore principale</div>
+    </div>
+    <div class="stat-cell o">
+      <span class="stat-num">20 k€</span>
+      <div class="stat-desc">costo medio di un attacco ransomware per una piccola impresa italiana</div>
     </div>
   </div>
-  <div class="section-label reveal" style="margin-top:3rem">Protezioni S3 implementate</div>
-  <div class="protection-grid reveal">
-    <div class="protection-card"><div class="protection-icon">🔒</div><div class="protection-body"><h4>Object Lock COMPLIANCE</h4><p>Nessuno può cancellare i backup per 30 giorni — nemmeno root AWS</p></div></div>
-    <div class="protection-card"><div class="protection-icon">🚫</div><div class="protection-body"><h4>IAM DENY esplicito</h4><p>pmi-backup-agent non può eseguire DeleteObject in nessun caso</p></div></div>
-    <div class="protection-card"><div class="protection-icon">🛡️</div><div class="protection-body"><h4>Bucket Policy DENY</h4><p>Blocca il delete da qualsiasi Principal — incluso admin console AWS</p></div></div>
-    <div class="protection-card"><div class="protection-icon">📋</div><div class="protection-body"><h4>Versioning + Lifecycle</h4><p>VersionId unico per ogni backup. Glacier dopo 30gg, eliminazione dopo 1 anno</p></div></div>
+  <div class="reveal" style="background:rgba(192,48,48,0.07);border:1px solid rgba(192,48,48,0.18);border-radius:10px;padding:1.25rem 1.5rem;font-size:13.5px;color:#e07070;font-weight:300;line-height:1.7">
+    Dal 1 gennaio 2025 la Direttiva NIS2 (D.Lgs. 138/2024) impone obblighi di backup e continuità operativa anche alle PMI. Sanzioni fino al 2% del fatturato globale per inadempienza.
   </div>
 </section>
 
-<div class="divider"></div>
+<hr class="rule">
 
-<section id="demo">
+<!-- SOLUZIONE -->
+<section class="section" id="soluzione">
   <div class="reveal">
-    <div class="section-label">03 — La Demo</div>
-    <h2 class="section-title">Attacco → Recovery<br>in ~2 minuti</h2>
-    <p class="section-sub">Sequenza dimostrabile live. Dal click sull'email di phishing al ripristino completo su EC2.</p>
+    <div class="section-kicker">02 — La soluzione</div>
+    <h2 class="section-heading">Architettura IronVault</h2>
+    <p class="section-sub">Infrastruttura ibrida on-premises e cloud con backup immutabile e recovery automatico. Costruita interamente con tecnologie open source e AWS Free Tier.</p>
   </div>
-  <div class="demo-steps reveal">
-    <div class="demo-step"><div class="step-num">01</div><div class="step-content"><h4>Email phishing — vettore di attacco</h4><p>Laura apre Outlook Web — vede email fake ADE. Scarica PDF allegato nella cartella Downloads.</p></div></div>
-    <div class="demo-step"><div class="step-num">02</div><div class="step-content"><h4>Esecuzione ransomware</h4><p>Doppio click sul dropper con icona PDF. F: G: H: si cifrano — intranet mostra pagina SISTEMA COMPROMESSO.</p></div></div>
-    <div class="demo-step"><div class="step-num">03</div><div class="step-content"><h4>Grafana UNDER ATTACK + email alert</h4><p>Dashboard SOC mostra picco I/O. Email notifica IronVault arriva con dettagli e comandi recovery.</p></div></div>
-    <div class="demo-step"><div class="step-num">04</div><div class="step-content"><h4>Air-gap S3 dimostrato</h4><p><code style="color:var(--rosso);font-family:var(--mono);font-size:.8rem">aws s3 rm → AccessDenied — explicit deny</code>. Backup inviolabile dimostrato live.</p></div></div>
-    <div class="demo-step"><div class="step-num">05</div><div class="step-content"><h4>Recovery su EC2 — RTO misurato</h4><p>start-instances → SSH → time bash recovery.sh → 144 file ripristinati. RTO totale: ~2 minuti.</p></div></div>
+  <div class="arch-two reveal">
+    <div class="arch-panel">
+      <div class="arch-panel-tag" style="color:var(--blu-a)">
+        <span style="width:8px;height:8px;background:var(--blu-a);border-radius:50%;display:inline-block"></span>
+        On-premises — VMware
+      </div>
+      <div class="arch-panel-title">Infrastruttura locale simulata</div>
+      <ul class="arch-list">
+        <li>Ubuntu Server 22.04 — file server + backup agent + stack Grafana SOC</li>
+        <li>Windows Server 2022 — Active Directory, GPO IronVault-Security-Policy</li>
+        <li>Windows 10 — postazione Laura Bianchi, punto di ingresso dell'attacco</li>
+        <li>Apache2 — portale intranet Studio Contabilità Milano su porta 80</li>
+        <li>Backup automatico ogni ora tramite cron job su S3</li>
+      </ul>
+    </div>
+    <div class="arch-panel">
+      <div class="arch-panel-tag" style="color:var(--verde)">
+        <span style="width:8px;height:8px;background:var(--verde);border-radius:50%;display:inline-block"></span>
+        AWS Cloud — eu-north-1
+      </div>
+      <div class="arch-panel-title">Layer di protezione cloud</div>
+      <ul class="arch-list">
+        <li>S3 Object Lock COMPLIANCE 30gg — backup WORM assolutamente inviolabile</li>
+        <li>IAM Least Privilege — DENY esplicito su DeleteObject per backup agent</li>
+        <li>Bucket Policy — DENY assoluto delete per qualsiasi Principal, incluso admin</li>
+        <li>EC2 t3.micro standby — recovery completo in ~2 minuti</li>
+        <li>CloudWatch + SNS — alert automatico su accessi non autorizzati</li>
+      </ul>
+    </div>
   </div>
-  <div class="results-grid reveal" style="margin-top:3rem">
-    <div class="result-card"><div class="result-val">~2 min</div><div class="result-label">RTO misurato</div></div>
-    <div class="result-card"><div class="result-val">60 min</div><div class="result-label">RPO massimo</div></div>
-    <div class="result-card"><div class="result-val">144</div><div class="result-label">File ripristinati</div></div>
-    <div class="result-card"><div class="result-val">700x</div><div class="result-label">Miglioramento vs nastro</div></div>
+  <div class="section-kicker reveal" style="margin-bottom:1rem">Protezioni S3 a strati</div>
+  <div class="shield-grid reveal">
+    <div class="shield-card"><div class="shield-icon">🔒</div><div class="shield-body"><h4>Object Lock COMPLIANCE</h4><p>Nessuno può cancellare i backup per 30 giorni — nemmeno l'account root AWS</p></div></div>
+    <div class="shield-card"><div class="shield-icon">🚫</div><div class="shield-body"><h4>IAM DENY esplicito</h4><p>Il backup agent non può eseguire DeleteObject — prevale su qualsiasi Allow futuro</p></div></div>
+    <div class="shield-card"><div class="shield-icon">🛡️</div><div class="shield-body"><h4>Bucket Policy DENY</h4><p>Blocca il delete da qualsiasi Principal — incluso l'amministratore dalla console AWS</p></div></div>
+    <div class="shield-card"><div class="shield-icon">📋</div><div class="shield-body"><h4>Versioning + Lifecycle</h4><p>VersionId unico per ogni backup. Glacier dopo 30gg, eliminazione automatica dopo 1 anno</p></div></div>
   </div>
 </section>
 
-<div class="divider"></div>
+<hr class="rule">
 
-<section id="nis2">
+<!-- DEMO -->
+<section class="section" id="demo">
   <div class="reveal">
-    <div class="section-label">04 — Conformità</div>
-    <h2 class="section-title">NIS2 Art. 21 — tutti i requisiti</h2>
-    <p class="section-sub">D.Lgs. 138/2024 — in vigore dal 1 gennaio 2025.</p>
+    <div class="section-kicker">03 — La demo</div>
+    <h2 class="section-heading">Attacco → Recovery<br>in ~2 minuti</h2>
+    <p class="section-sub">Sequenza completamente automatica e dimostrabile live. Da un singolo doppio click al ripristino integrale su EC2.</p>
   </div>
-  <table class="nis2-table reveal">
-    <thead><tr><th>Requisito NIS2</th><th>Implementazione IronVault</th><th>Stato</th></tr></thead>
-    <tbody>
-      <tr><td>Continuità operativa</td><td>EC2 recovery — RTO ~2 minuti documentato e testato live</td><td><span class="badge-ok">COMPLIANT</span></td></tr>
-      <tr><td>Backup e ripristino</td><td>S3 Object Lock COMPLIANCE 30gg — RPO max 60 minuti</td><td><span class="badge-ok">COMPLIANT</span></td></tr>
-      <tr><td>Controllo degli accessi</td><td>IAM Least Privilege + Active Directory + permessi NTFS</td><td><span class="badge-ok">COMPLIANT</span></td></tr>
-      <tr><td>Politiche di sicurezza</td><td>GPO IronVault-Security-Policy + Audit Log Event Viewer</td><td><span class="badge-ok">COMPLIANT</span></td></tr>
-      <tr><td>Gestione degli incidenti</td><td>Procedura DR testata + alert automatico email Grafana</td><td><span class="badge-ok">COMPLIANT</span></td></tr>
-      <tr><td>Utilizzo della crittografia</td><td>S3 SSE + HTTPS in transito</td><td><span class="badge-ok">COMPLIANT</span></td></tr>
-    </tbody>
-  </table>
+  <div class="demo-flow reveal">
+    <div class="demo-row">
+      <div class="demo-num">01</div>
+      <div class="demo-content">
+        <h4>Email phishing — il vettore</h4>
+        <p>Laura apre Outlook Web e vede una email con grafica ufficiale dell'Agenzia delle Entrate. Scarica il PDF allegato nella cartella Downloads.</p>
+        <span class="demo-badge attack">vettore: phishing</span>
+      </div>
+    </div>
+    <div class="demo-row">
+      <div class="demo-num">02</div>
+      <div class="demo-content">
+        <h4>Esecuzione ransomware automatica</h4>
+        <p>Doppio click sul dropper mascherato da PDF. F: G: H: si cifrano, il trigger server riceve il segnale HTTP e lancia lo script su Ubuntu. Il sito intranet mostra la pagina di compromissione.</p>
+        <span class="demo-badge attack">F: G: H: → .locked | intranet offline</span>
+      </div>
+    </div>
+    <div class="demo-row">
+      <div class="demo-num">03</div>
+      <div class="demo-content">
+        <h4>Grafana rileva l'attacco</h4>
+        <p>La dashboard SOC mostra il picco di scrittura su disco. THREAT LEVEL passa da SECURE a UNDER ATTACK. L'email di alert IronVault arriva con dettagli e comandi di recovery.</p>
+        <span class="demo-badge defend">alert email automatico</span>
+      </div>
+    </div>
+    <div class="demo-row">
+      <div class="demo-num">04</div>
+      <div class="demo-content">
+        <h4>Air-gap S3 — backup inviolabile</h4>
+        <p><code style="font-family:var(--mono);font-size:12px;color:var(--rosso);background:rgba(192,48,48,0.1);padding:2px 7px;border-radius:4px">aws s3 rm → AccessDenied — explicit deny</code><br>Anche con le credenziali rubate dal server, il backup è intoccabile.</p>
+        <span class="demo-badge defend">IAM deny dimostrato live</span>
+      </div>
+    </div>
+    <div class="demo-row">
+      <div class="demo-num">05</div>
+      <div class="demo-content">
+        <h4>Recovery su EC2 — RTO misurato con timer</h4>
+        <p>Avvio istanza → SSH → <code style="font-family:var(--mono);font-size:12px;color:var(--blu-a)">time bash recovery.sh</code> → 144 file ripristinati in ~3 secondi. Il sito intranet torna online. RTO totale: ~2 minuti.</p>
+        <span class="demo-badge recover">144/144 file | ~2 min</span>
+      </div>
+    </div>
+  </div>
+  <div class="results-strip reveal" style="margin-top:2rem">
+    <div class="result-cell"><span class="result-val">~2 min</span><span class="result-label">RTO misurato</span></div>
+    <div class="result-cell"><span class="result-val">60 min</span><span class="result-label">RPO massimo</span></div>
+    <div class="result-cell"><span class="result-val">144</span><span class="result-label">File ripristinati</span></div>
+    <div class="result-cell"><span class="result-val">700×</span><span class="result-label">vs backup nastro</span></div>
+  </div>
 </section>
 
-<div class="divider"></div>
+<hr class="rule">
 
-<section id="team">
+<!-- NIS2 -->
+<section class="section" id="nis2">
   <div class="reveal">
-    <div class="section-label">05 — Il Team</div>
-    <h2 class="section-title">DN Security Labs</h2>
-    <p class="section-sub">Due studenti ITS con un obiettivo: dimostrare che la cybersecurity professionale è accessibile a qualsiasi PMI italiana.</p>
+    <div class="section-kicker">04 — Conformità</div>
+    <h2 class="section-heading">NIS2 Art. 21<br>— requisiti soddisfatti</h2>
+    <p class="section-sub">D.Lgs. 138/2024 in vigore dal 1 gennaio 2025. Sanzioni fino al 2% del fatturato globale per inadempienza.</p>
+  </div>
+  <div class="nis2-wrap reveal">
+    <table class="nis2-table">
+      <thead><tr><th>Requisito NIS2</th><th>Implementazione IronVault</th><th>Stato</th></tr></thead>
+      <tbody>
+        <tr><td>Continuità operativa</td><td>EC2 recovery — RTO ~2 minuti documentato e testato live con timer</td><td><span class="pill-ok">COMPLIANT</span></td></tr>
+        <tr><td>Backup e ripristino</td><td>S3 Object Lock COMPLIANCE 30gg — RPO massimo 60 minuti garantito</td><td><span class="pill-ok">COMPLIANT</span></td></tr>
+        <tr><td>Controllo degli accessi</td><td>IAM Least Privilege + Active Directory + permessi NTFS per utente</td><td><span class="pill-ok">COMPLIANT</span></td></tr>
+        <tr><td>Politiche di sicurezza</td><td>GPO IronVault-Security-Policy + Audit Log Event Viewer ID 4663</td><td><span class="pill-ok">COMPLIANT</span></td></tr>
+        <tr><td>Gestione degli incidenti</td><td>Procedura DR documentata e testata + alert automatico Grafana/email</td><td><span class="pill-ok">COMPLIANT</span></td></tr>
+        <tr><td>Utilizzo della crittografia</td><td>S3 SSE (server-side encryption) + HTTPS in transito su tutte le comunicazioni</td><td><span class="pill-ok">COMPLIANT</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- TEAM -->
+<section class="section" id="team">
+  <div class="reveal">
+    <div class="section-kicker">05 — Il team</div>
+    <h2 class="section-heading">DN Security Labs</h2>
+    <p class="section-sub">Due studenti ITS con un obiettivo concreto: dimostrare che la cybersecurity professionale è accessibile a qualsiasi PMI italiana.</p>
   </div>
   <div class="team-grid reveal">
     <div class="team-card">
-      <div class="team-avatar" style="background:var(--blu-m)">DS</div>
+      <div class="team-avatar" style="background:linear-gradient(135deg,#1A5FA8,#3B8FE8)">DS</div>
       <div class="team-name">Diego Servadio</div>
       <div class="team-role">Cloud & Infrastructure</div>
-      <div class="team-skills">
-        <span class="skill-tag">AWS</span><span class="skill-tag">Ubuntu</span><span class="skill-tag">Docker</span><span class="skill-tag">Grafana</span><span class="skill-tag">Python</span><span class="skill-tag">Bash</span><span class="skill-tag">S3 Object Lock</span><span class="skill-tag">EC2</span>
+      <div class="tags">
+        <span class="tag">AWS</span><span class="tag">Ubuntu</span><span class="tag">Docker</span>
+        <span class="tag">Grafana</span><span class="tag">Python</span><span class="tag">Bash</span>
+        <span class="tag">S3 Object Lock</span><span class="tag">EC2</span>
       </div>
     </div>
     <div class="team-card">
-      <div class="team-avatar" style="background:var(--verde)">NM</div>
+      <div class="team-avatar" style="background:linear-gradient(135deg,#0E8A5F,#2AC98A)">NM</div>
       <div class="team-name">Naween Mapa</div>
       <div class="team-role">Windows & Compliance</div>
-      <div class="team-skills">
-        <span class="skill-tag">Active Directory</span><span class="skill-tag">Group Policy</span><span class="skill-tag">Windows Server</span><span class="skill-tag">NIS2</span><span class="skill-tag">PowerShell</span><span class="skill-tag">SMB</span>
+      <div class="tags">
+        <span class="tag">Active Directory</span><span class="tag">Group Policy</span>
+        <span class="tag">Windows Server</span><span class="tag">NIS2</span>
+        <span class="tag">PowerShell</span><span class="tag">SMB</span><span class="tag">Event Viewer</span>
       </div>
     </div>
   </div>
-  <div style="margin-top:2rem;text-align:center;color:var(--grigio);font-family:var(--mono);font-size:.85rem" class="reveal">ITS Academy Tech Talent Factory &mdash; Corso ITS Cloud &amp; Security 2024-2026</div>
+  <div class="reveal" style="margin-top:2rem;text-align:center;font-family:var(--mono);font-size:11.5px;color:var(--testo2);letter-spacing:1px">
+    ITS Academy Tech Talent Factory — Corso ITS Cloud & Security 2024-2026
+  </div>
 </section>
 
-<div class="divider"></div>
+<hr class="rule">
 
 <footer>
-  <div class="footer-left">
-    <div class="nav-badge">DN</div>
-    <span class="footer-text">DN Security Labs &copy; 2026</span>
+  <div class="footer-brand">
+    <div class="nav-emblem">DN</div>
+    <span class="footer-copy">DN Security Labs © 2026</span>
   </div>
   <div class="footer-links">
     <a href="https://github.com/Diegoservadio/ironvault" target="_blank">GitHub</a>
@@ -285,9 +902,15 @@ footer{position:relative;z-index:1;border-top:1px solid var(--bordo);padding:3re
 </footer>
 
 <script>
-const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}})},{threshold:0.1});
-document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
-document.querySelectorAll('.stats-grid .stat-card,.protection-grid .protection-card,.results-grid .result-card').forEach((el,i)=>{el.style.transitionDelay=`${i*0.08}s`});
+const io = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('in'), i * 80);
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 </script>
 </body>
 </html>
