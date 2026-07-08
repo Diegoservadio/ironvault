@@ -22,26 +22,7 @@ IronVault dimostra che è possibile costruire un'architettura professionale con 
 
 ## 🏗️ Architettura
 
-```
-┌─────────────────────────────────────────────┐     ┌──────────────────────────────────┐
-│         ON-PREMISES (VMware)                 │     │        AWS CLOUD eu-north-1      │
-│                                             │     │                                  │
-│  ┌─────────────────┐  ┌──────────────────┐  │     │  ┌────────────────────────────┐  │
-│  │ PMI-FileServer  │  │ PMI-WindowsServer│  │     │  │   S3 pmi-backup-airgap     │  │
-│  │ Ubuntu 22.04    │  │ Windows Server   │  │     │  │   Object Lock COMPLIANCE   │  │
-│  │ .140            │  │ 2022 — AD/GPO    │  │     │  │   30 giorni retention      │  │
-│  │ Docker/Grafana  │  │ .141             │  │─────┼─▶│   IAM DENY delete          │  │
-│  │ backup.sh       │  │ SMB shares       │  │     │  │   Bucket Policy DENY       │  │
-│  └────────┬────────┘  └──────────────────┘  │     │  └──────────────┬─────────────┘  │
-│           │                                  │     │                 │                │
-│  ┌─────────────────┐                         │     │  ┌─────────────▼─────────────┐  │
-│  │ PMI-Reception   │  ◀── SMB ──────────────┘     │  │   EC2 t3.micro            │  │
-│  │ Windows 10      │                               │  │   pmi-recovery-role       │  │
-│  │ laura.bianchi   │                               │  │   RTO: ~2 minuti          │  │
-│  │ F: G: H: mapped │                               │  │   Standby — 0 euro        │  │
-│  └─────────────────┘                               │  └───────────────────────────┘  │
-└─────────────────────────────────────────────┘     └──────────────────────────────────┘
-```
+![IronVault Architecture](screenshots/architecture-diagram.png)
 
 ---
 
@@ -55,6 +36,54 @@ IronVault dimostra che è possibile costruire un'architettura professionale con 
 | **Costo demo** | 0 euro | AWS Free Tier |
 | **Costo PMI reale** | ~15 euro/mese | 50 dipendenti, 500 GB dati |
 | **Conformità NIS2** | Art. 21 — completo | Tutti i requisiti mappati |
+
+---
+
+## 📸 Screenshots
+
+### AWS Infrastructure
+
+| S3 Bucket | Object Lock | Backups Windows |
+|-----------|-------------|-----------------|
+| ![S3](screenshots/aws/s3-bucket-overview.png) | ![Lock](screenshots/aws/s3-object-lock.png) | ![Backups](screenshots/aws/s3-backups-windows.png) |
+
+| IAM Backup Agent | IAM Recovery Role | SNS Subscription |
+|-----------------|-------------------|------------------|
+| ![IAM Agent](screenshots/aws/iam-backup-agent.png) | ![IAM Role](screenshots/aws/iam-recovery-role.png) | ![SNS](screenshots/aws/sns-subscription.png) |
+
+| EC2 Instance | EC2 Security Role | AMIs |
+|--------------|-------------------|------|
+| ![EC2](screenshots/aws/ec2-instance.png) | ![EC2 Role](screenshots/aws/ec2-security-role.png) | ![AMI](screenshots/aws/ec2-amis.png) |
+
+| CloudWatch Alarm | CloudTrail Trail | CloudTrail Events |
+|-----------------|------------------|-------------------|
+| ![CW](screenshots/aws/cloudwatch-alarm.png) | ![CT Trail](screenshots/aws/cloudtrail-trail.png) | ![CT Events](screenshots/aws/cloudtrail-events.png) |
+
+| VPC Overview | VPC Subnets |
+|--------------|-------------|
+| ![VPC](screenshots/aws/vpc-overview.png) | ![Subnets](screenshots/aws/vpc-subnets.png) |
+
+### Monitoring — Grafana
+
+| Dashboard IronVault | Attività Disco |
+|--------------------|----------------|
+| ![Grafana](screenshots/grafana/grafana-dashboard.png) | ![Disco](screenshots/grafana/grafana-disco.png) |
+
+### On-Premises — Windows Server
+
+| Server Manager | Active Directory | GPO Security Policy |
+|---------------|-----------------|---------------------|
+| ![SM](screenshots/windows-server/server-manager.png) | ![AD](screenshots/windows-server/active-directory-users.png) | ![GPO](screenshots/windows-server/gpo-ironvault.png) |
+
+| Condivisioni SMB |
+|-----------------|
+| ![Files](screenshots/windows-server/condivisioni-files.png) |
+
+### Ubuntu — Recovery
+
+| Docker Containers | Emergency Recovery |
+|------------------|--------------------|
+| ![Docker](screenshots/ubuntu/ubuntu-docker-ps.png) | ![Recovery](screenshots/ubuntu/ubuntu-recovery.png) |
 
 ---
 
@@ -100,6 +129,13 @@ IronVault dimostra che è possibile costruire un'architettura professionale con 
 ironvault/
 ├── README.md                    # Questa documentazione
 ├── index.html                   # Sito web DN Security Labs (GitHub Pages)
+│
+├── screenshots/                 # Screenshot infrastruttura
+│   ├── architecture-diagram.png # Diagramma architettura draw.io
+│   ├── aws/                     # Console AWS
+│   ├── grafana/                 # Dashboard Grafana
+│   ├── ubuntu/                  # Ubuntu recovery
+│   └── windows-server/          # Windows Server AD e GPO
 │
 ├── scripts/                     # Script principali
 │   ├── ubuntu/
